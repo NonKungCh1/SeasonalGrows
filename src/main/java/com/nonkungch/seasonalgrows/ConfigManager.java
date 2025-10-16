@@ -1,8 +1,9 @@
+// /src/main/java/com/nonkungch/seasonalgrows/ConfigManager.java
+
 package com.nonkungch.seasonalgrows;
 
-import com.nonkungch.dynamicsurvival.DynamicSurvivalAPI;
 import com.nonkungch.dynamicsurvival.Season;
-
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -48,7 +49,7 @@ public class ConfigManager {
                                 return null;
                             }
                         })
-                        .filter(material -> material != null && material.isBlock())
+                        .filter(material -> material != null)
                         .collect(Collectors.toSet());
 
                 growthRules.put(season, allowedCrops);
@@ -59,17 +60,20 @@ public class ConfigManager {
         }
     }
 
+    public String getCannotPlantMessage() {
+        String message = plugin.getConfig().getString("messages.cannot-plant-in-season", "&c[!] คุณไม่สามารถปลูก %crop% ในฤดู%season% ได้!");
+        return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    public Set<Material> getAllowedCrops(Season season) {
+        return growthRules.get(season);
+    }
+
     public boolean canCropGrow(Material cropType, Season currentSeason) {
         Set<Material> allowedCrops = growthRules.get(currentSeason);
-
         if (allowedCrops == null) {
-            // ถ้าฤดูนั้นไม่ได้ถูกตั้งค่าไว้เลย ให้ยึดตามค่า default
             return allowUnlistedCrops;
         }
-
-        // ถ้าพืชอยู่ในรายการของฤดูนั้นๆ จะโตได้เสมอ
-        // ถ้าไม่อยู่ ให้ตัดสินตามค่า allow-unlisted-crops-to-grow
         return allowedCrops.contains(cropType) || allowUnlistedCrops;
     }
-      }
-                  
+}

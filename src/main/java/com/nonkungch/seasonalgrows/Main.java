@@ -1,22 +1,21 @@
+// /src/main/java/com/nonkungch/seasonalgrows/Main.java
+
 package com.nonkungch.seasonalgrows;
 
 import com.nonkungch.dynamicsurvival.DynamicSurvivalAPI;
-import com.nonkungch.dynamicsurvival.Season;
-
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
 
     private DynamicSurvivalAPI dsAPI;
     private ConfigManager configManager;
+    private CropGUI cropGUI;
 
     @Override
     public void onEnable() {
-        // 1. โหลดและจัดการไฟล์ config.yml
         this.configManager = new ConfigManager(this);
         getLogger().info("Configuration loaded.");
 
-        // 2. เชื่อมต่อกับ API ของ Dynamic Survival
         if (!setupAPI()) {
             getLogger().severe("Failed to hook into Dynamic Survival API. This addon will be disabled.");
             getServer().getPluginManager().disablePlugin(this);
@@ -24,10 +23,17 @@ public final class Main extends JavaPlugin {
         }
         getLogger().info("Successfully hooked into Dynamic Survival API!");
 
-        // 3. ลงทะเบียน Event Listener
+        // สร้าง Instance ของ CropGUI
+        this.cropGUI = new CropGUI(this);
+        
+        // ลงทะเบียน Listener ทั้งหมด
         getServer().getPluginManager().registerEvents(new CropGrowthListener(this), this);
+        getServer().getPluginManager().registerEvents(new CropPlantListener(this), this);
+        
+        // ลงทะเบียน Command Executor
+        this.getCommand("ssg").setExecutor(new SSGCommand(this, cropGUI));
 
-        getLogger().info("Seasonal Grows Addon has been enabled!");
+        getLogger().info("Seasonal Grows Addon has been enabled with new features!");
     }
 
     @Override
@@ -36,21 +42,16 @@ public final class Main extends JavaPlugin {
     }
 
     private boolean setupAPI() {
-        if (getServer().getPluginManager().getPlugin("DynamicSurvival") == null) {
-            return false;
-        }
-        // **สำคัญ: แก้ไขวิธีเรียกใช้ API ให้ถูกต้องตาม Document ของ Dynamic Survival**
         try {
+            // ใช้ Class.forName เพื่อให้แน่ใจว่า Plugin หลักโหลดแล้ว
+            Class.forName("com.nonkungch.dynamicsurvival.DynamicSurvivalAPI");
             this.dsAPI = DynamicSurvivalAPI.getInstance();
             return this.dsAPI != null;
-        } catch (Exception e) {
-            getLogger().severe("An error occurred while hooking into the Dynamic Survival API.");
-            e.printStackTrace();
+        } catch (ClassNotFoundException | IllegalStateException e) {
             return false;
         }
     }
 
-    // Getter เพื่อให้ Class อื่นเรียกใช้ API และ Config ได้
     public DynamicSurvivalAPI getDsAPI() {
         return dsAPI;
     }
@@ -58,5 +59,4 @@ public final class Main extends JavaPlugin {
     public ConfigManager getConfigManager() {
         return configManager;
     }
-                                                      }
-          
+}

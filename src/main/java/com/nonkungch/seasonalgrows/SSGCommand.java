@@ -20,7 +20,6 @@ public class SSGCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
-            // แสดงหน้าต่างช่วยเหลือ
             sender.sendMessage("§a--- Seasonal Grows Help ---");
             sender.sendMessage("§e/ssg gui §7- เปิดหน้าต่างข้อมูลพืชตามฤดูกาล");
             if (sender.hasPermission("seasonalgrows.reload")) {
@@ -36,7 +35,6 @@ public class SSGCommand implements CommandExecutor {
                 sender.sendMessage("§cคำสั่งนี้สามารถใช้ได้โดยผู้เล่นเท่านั้น");
                 return true;
             }
-            // ผู้เล่นทุกคนใช้ได้ ไม่ต้องเช็ค permission
             cropGUI.openGUI((Player) sender);
             return true;
         }
