@@ -1,43 +1,54 @@
+# ตั้งชื่อ Workflow ของคุณ (จะแสดงในหน้า Actions ของ GitHub)
 name: Maven Build Plugin SeasonalGrows
 
+# กำหนดเงื่อนไขที่จะให้ Workflow นี้ทำงาน
 on:
+  # ทำงานทุกครั้งที่มีการ push โค้ดไปยัง branch 'main' หรือ 'master'
   push:
     branches:
       - main
       - master
+  # เพิ่มปุ่มให้สามารถสั่งรัน Workflow นี้ได้ด้วยตนเอง
   workflow_dispatch:
 
+# กำหนดงานที่จะต้องทำ
 jobs:
   build:
+    # กำหนดให้งานนี้รันบนเครื่องเซิร์ฟเวอร์ Ubuntu เวอร์ชันล่าสุด
     runs-on: ubuntu-latest
     
+    # ขั้นตอนการทำงานทั้งหมด
     steps:
-      # 1. Checkout code
-      - uses: actions/checkout@v4
+      # 1. Checkout Code: ดาวน์โหลดโค้ดล่าสุดจาก Repository ของคุณ
+      - name: Checkout repository code
+        uses: actions/checkout@v4
 
-      # 2. Set up JDK 17
+      # 2. Set up JDK 17: ติดตั้ง Java Development Kit (JDK) เวอร์ชัน 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+          # ทำ Cache ไฟล์ที่ Maven ดาวน์โหลดไว้ เพื่อให้การ Build ครั้งต่อไปเร็วขึ้น
           cache: maven
 
-      # 3. Build ด้วย Maven
+      # 3. Build with Maven: รันคำสั่งเพื่อสร้างไฟล์ .jar
       - name: Build with Maven
         run: mvn clean package -B
 
-      # 4. ค้นหา JAR Artifact
+      # 4. Find Artifact JAR: ค้นหาไฟล์ .jar ที่สร้างเสร็จแล้วในโฟลเดอร์ target/
       - name: Find Artifact JAR
         id: find_jar
         run: |
           echo "JAR_PATH=$(find target/ -name 'SeasonalGrows-*.jar' -print -quit)" >> $GITHUB_ENV
 
-      # 5. Upload Artifact
+      # 5. Upload Artifact: อัปโหลดไฟล์ .jar ที่ค้นเจอขึ้นไปเก็บไว้ในหน้าผลลัพธ์ของ Workflow
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
+          # ตั้งชื่อไฟล์ที่อัปโหลด (จะถูกบีบอัดเป็น .zip)
           name: SeasonalGrows-Plugin
+          # ระบุตำแหน่งของไฟล์ที่จะอัปโหลด
           path: ${{ env.JAR_PATH }}
+          # ถ้าหาไฟล์ไม่เจอ ให้ถือว่าการทำงานล้มเหลว
           if-no-files-found: error
-          
