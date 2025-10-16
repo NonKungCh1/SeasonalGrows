@@ -27,7 +27,7 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-            </plugins>
+        </plugins>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -55,8 +55,7 @@
             <groupId>com.dynamicsurvival</groupId>
             <artifactId>DynamicSurvival</artifactId>
             <version>LATEST</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/DynamicSurvival.jar</systemPath>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
