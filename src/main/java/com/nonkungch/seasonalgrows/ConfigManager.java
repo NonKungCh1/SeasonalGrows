@@ -1,6 +1,7 @@
 package com.nonkungch.seasonalgrows;
 
-import com.dynamicsurvival.api.Season; // **สำคัญ: แก้ไข Path นี้ให้ตรงกับ API จริง**
+import com.dynamicsurvival.api.DynamicSurvivalAPI;
+import com.dynamicsurvival.api.Season;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
