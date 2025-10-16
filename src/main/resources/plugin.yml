@@ -5,7 +5,6 @@ main: com.nonkungch.seasonalgrows.Main
 api-version: '1.21'
 depend: [DynamicSurvival]
 
-# --- เพิ่มส่วนนี้เข้าไป ---
 commands:
   ssg:
     description: คำสั่งหลักของ Seasonal Grows
