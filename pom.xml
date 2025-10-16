@@ -52,10 +52,10 @@
         </dependency>
 
         <dependency>
-            <groupId>com.dynamicsurvival</groupId>
-            <artifactId>DynamicSurvival</artifactId>
-            <version>LATEST</version>
-            <scope>provided</scope>
+             <groupId>com.dynamicsurvival</groupId>
+             <artifactId>DynamicSurvival</artifactId>
+             <version>LATEST</version>
+             <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
