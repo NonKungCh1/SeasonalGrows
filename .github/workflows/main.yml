@@ -25,14 +25,15 @@ jobs:
       # This step finds the JAR you pushed and makes it available to Maven
       - name: Install local dependency from libs folder
         run: |
-          mvn install:install-file \
-            -Dfile=libs/DynamicSurvival.jar \
-            -DgroupId=com.dynamicsurvival \
-            -DartifactId=DynamicSurvival \
-            -Dversion=LATEST \
-            -Dpackaging=jar \
-            -DgeneratePom=true
+           mvn install:install-file \
+             -Dfile=libs/DynamicSurvival.jar \
+             -DgroupId=com.dynamicsurvival \
+             -DartifactId=DynamicSurvival \
+             -Dversion=LATEST \
+             -Dpackaging=jar \
+             -DgeneratePom=true
 
+            
       - name: Build with Maven
         run: mvn clean package -B
 
