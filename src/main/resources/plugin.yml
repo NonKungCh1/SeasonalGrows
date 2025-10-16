@@ -1,0 +1,6 @@
+name: SeasonalGrows
+author: NonKungCh
+version: ${project.version}
+main: com.nonkungch.seasonalgrows.Main
+api-version: '1.21'
+depend: [DynamicSurvival]
