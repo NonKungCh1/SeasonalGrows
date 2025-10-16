@@ -1,0 +1,36 @@
+# ============================================ #
+#        Seasonal Grows Addon Config           #
+# ============================================ #
+
+# กำหนดว่าพืชที่ไม่ได้อยู่ในรายการจะโตตามปกติได้หรือไม่
+# true: โตได้ปกติ
+# false: โตไม่ได้เลย (บังคับให้ต้องระบุในนี้เท่านั้น)
+allow-unlisted-crops-to-grow: true
+
+# รายการพืชที่เติบโตได้ในแต่ละฤดู
+# ดูชื่อ Material ของพืชได้ที่: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+seasons:
+  SPRING:
+    - WHEAT
+    - CARROTS
+    - POTATOES
+    - BEETROOTS
+    - SWEET_BERRY_BUSH
+  SUMMER:
+    - WHEAT
+    - MELON_STEM
+    - PUMPKIN_STEM
+    - SUGAR_CANE
+    - CACTUS
+    - SWEET_BERRY_BUSH
+  AUTUMN:
+    - WHEAT
+    - CARROTS
+    - POTATOES
+    - BEETROOTS
+    - PUMPKIN_STEM
+    - NETHER_WART
+  WINTER:
+    - KELP
+    - SWEET_BERRY_BUSH
+    
