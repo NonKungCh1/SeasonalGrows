@@ -1,7 +1,8 @@
 package com.nonkungch.seasonalgrows;
 
-import com.dynamicsurvival.api.DynamicSurvivalAPI;
-import com.dynamicsurvival.api.Season;
+import com.nonkungch.dynamicsurvival.DynamicSurvivalAPI;
+import com.nonkungch.dynamicsurvival.Season;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
