@@ -1,25 +1,29 @@
-# ตั้งชื่อ Workflow ของคุณ
+# Name of your workflow, which will be displayed on the GitHub Actions page
 name: Maven Build Plugin SeasonalGrows
 
+# Conditions that will trigger this workflow to run
 on:
+  # Runs every time code is pushed to the 'main' or 'master' branch
   push:
     branches:
       - main
       - master
+  # Adds a button to manually run this workflow from the Actions page
   workflow_dispatch:
 
+# Defines the jobs to be executed
 jobs:
   build:
-    # กำหนดให้รันบนเซิร์ฟเวอร์ Ubuntu
+    # Specifies that this job will run on the latest version of an Ubuntu server
     runs-on: ubuntu-latest
     
+    # All the steps the job will perform
     steps:
-      # 1. Checkout Code: ดาวน์โหลดโค้ดจาก Repository
+      # 1. Checkout Code: Downloads the latest code from your repository
       - name: Checkout repository code
         uses: actions/checkout@v4
 
-      # ✅ [แก้ไข] เปลี่ยนเป็น JDK 21 เพื่อให้ตรงกับ pom.xml และรองรับ Minecraft 1.21+
-      # 2. Set up JDK 21: สั่งให้เซิร์ฟเวอร์ติดตั้ง Java 21
+      # 2. Set up JDK 21: Installs Java Development Kit (JDK) version 21
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -27,14 +31,35 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # 3. Build with Maven: รันคำสั่ง Build
+      # 3. Install Local Dependency: This is the new, critical step.
+      # It takes your .jar from the 'libs' folder and makes it available to Maven.
+      - name: Install local dependency from libs folder
+        run: |
+          mvn install:install-file \
+            -Dfile=libs/DynamicSurvival.jar \
+            -DgroupId=com.dynamicsurvival \
+            -DartifactId=DynamicSurvival \
+            -Dversion=LATEST \
+            -Dpackaging=jar \
+            -DgeneratePom=true
+
+      # 4. Build with Maven: Now that Maven can find DynamicSurvival, this will succeed.
       - name: Build with Maven
         run: mvn clean package -B
 
-      # 4. Find Artifact JAR: ค้นหาไฟล์ .jar ที่สร้างเสร็จ
+      # 5. Find Artifact JAR: Locates the final compiled .jar file in the 'target' directory
       - name: Find Artifact JAR
         id: find_jar
         run: |
+          echo "JAR_PATH=$(find target/ -name 'SeasonalGrows-*.jar' -print -quit)" >> $GITHUB_ENV
+
+      # 6. Upload Artifact: Uploads the compiled plugin so you can download it.
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SeasonalGrows-Plugin
+          path: ${{ env.JAR_PATH }}
+          if-no-files-found: error        run: |
           echo "JAR_PATH=$(find target/ -name 'SeasonalGrows-*.jar' -print -quit)" >> $GITHUB_ENV
 
       # 5. Upload Artifact: อัปโหลดไฟล์ .jar
