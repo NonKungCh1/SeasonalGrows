@@ -4,3 +4,15 @@ version: ${project.version}
 main: com.nonkungch.seasonalgrows.Main
 api-version: '1.21'
 depend: [DynamicSurvival]
+
+# --- เพิ่มส่วนนี้เข้าไป ---
+commands:
+  ssg:
+    description: คำสั่งหลักของ Seasonal Grows
+    usage: /<command> [help|gui|reload]
+    aliases: [seasonalgrows]
+
+permissions:
+  seasonalgrows.reload:
+    description: อนุญาตให้ใช้คำสั่ง /ssg reload
+    default: op
